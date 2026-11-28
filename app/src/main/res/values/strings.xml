@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">Social India</string>
+    <string name="crash_title">App Crash Report</string>
+    <string name="crash_copy_button">Copy Error</string>
+    <string name="crash_copied_button">Copied</string>
+    <string name="crash_restart_button">Restart</string>
+    <string name="crash_copied_toast">Error report copied to clipboard</string>
+    <string name="crash_copy_failed_toast">Unable to copy error report</string>
+    <string name="crash_label_exception">Exception</string>
+    <string name="crash_label_message">Message</string>
+    <string name="crash_label_location">File &amp; Line</string>
+    <string name="crash_label_method">Method</string>
+    <string name="crash_label_thread">Thread</string>
+    <string name="crash_label_stacktrace">Full Stack Trace</string>
+</resources>

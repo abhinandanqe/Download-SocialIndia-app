@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:aapt="http://schemas.android.com/aapt"
+    android:width="512dp"
+    android:height="512dp"
+    android:viewportWidth="512"
+    android:viewportHeight="512">
+    
+    <!-- Gradient background with rounded square shape (Squircle) -->
+    <path
+        android:pathData="M 64 0 
+                          L 448 0 
+                          C 484 0, 512 28, 512 64 
+                          L 512 448 
+                          C 512 484, 484 512, 448 512 
+                          L 64 512 
+                          C 28 512, 0 484, 0 448 
+                          L 0 64 
+                          C 0 28, 28 0, 64 0 Z">
+        <aapt:attr name="android:fillColor">
+            <gradient
+                android:startX="0"
+                android:startY="0"
+                android:endX="512"
+                android:endY="512"
+                android:type="linear">
+                <item android:color="#3F51B5" android:offset="0.0" />
+                <item android:color="#8E24AA" android:offset="0.35" />
+                <item android:color="#D81B60" android:offset="0.65" />
+                <item android:color="#E65100" android:offset="0.85" />
+                <item android:color="#FFB300" android:offset="1.0" />
+            </gradient>
+        </aapt:attr>
+    </path>
+
+    <!-- Stylized "Si" - "S" lettermark -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M 294 135
+                          C 250 135, 202 150, 202 205
+                          C 202 245, 240 265, 280 265
+                          C 305 265, 325 245, 325 220
+                          C 325 195, 305 180, 275 180
+                          C 255 180, 240 190, 240 205
+                          C 240 215, 250 220, 258 220
+                          C 266 220, 272 215, 272 205
+                          C 272 198, 280 194, 288 194
+                          C 298 194, 306 202, 306 215
+                          C 306 230, 290 246, 268 246
+                          C 236 246, 220 225, 220 200
+                          C 220 165, 255 150, 294 150
+                          C 302 150, 310 152, 316 156
+                          C 322 160, 326 156, 326 148
+                          C 326 140, 314 135, 294 135 Z" />
+    <!-- Stylized "Si" - "i" dot -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M 330 103 A 22 22 0 1 1 329.9 103 Z" />
+    <!-- Stylized "Si" - "i" stem -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M 320 160
+                          L 342 160
+                          C 342 210, 325 265, 295 278
+                          C 290 280, 285 270, 290 265
+                          C 308 248, 320 210, 320 160 Z" />
+    <!-- Wordmark "SOCIAL" -->
+    <!-- Letter S -->
+    <path
+        android:strokeWidth="6"
+        android:strokeColor="#FFFFFF"
+        android:fillColor="#00000000"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round"
+        android:pathData="M 156 349 C 146 349, 136 353, 136 357 C 136 361, 140 363, 146 364 C 152 365, 156 367, 156 371 C 156 375, 148 381, 136 381" />
+    <!-- Letter O -->
+    <path
+        android:strokeWidth="6"
+        android:strokeColor="#FFFFFF"
+        android:fillColor="#00000000"
+        android:pathData="M 190 349 A 16 16 0 1 1 189.9 349 Z" />
+    <!-- Letter C -->
+    <path
+        android:strokeWidth="6"
+        android:strokeColor="#FFFFFF"
+        android:fillColor="#00000000"
+        android:strokeLineCap="round"
+        android:pathData="M 246 349 A 16 16 0 0 0 230 365 A 16 16 0 0 0 246 381" />
+    <!-- Letter I -->
+    <path
+        android:strokeWidth="6"
+        android:strokeColor="#FFFFFF"
+        android:fillColor="#00000000"
+        android:strokeLineCap="round"
+        android:pathData="M 278 349 L 278 381" />
+    <!-- Letter A -->
+    <path
+        android:strokeWidth="6"
+        android:strokeColor="#FFFFFF"
+        android:fillColor="#00000000"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round"
+        android:pathData="M 310 381 L 322 349 L 334 381 M 314 371 L 330 371" />
+    <!-- Letter L -->
+    <path
+        android:strokeWidth="6"
+        android:strokeColor="#FFFFFF"
+        android:fillColor="#00000000"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round"
+        android:pathData="M 356 349 L 356 381 L 376 381" />
+    <!-- Subtitle "— INDIA —" -->
+    <!-- Left Dash -->
+    <path
+        android:strokeWidth="4"
+        android:strokeColor="#FFC107"
+        android:fillColor="#00000000"
+        android:strokeLineCap="round"
+        android:pathData="M 110 415 L 140 415" />
+    <!-- Letter I -->
+    <path
+        android:strokeWidth="4"
+        android:strokeColor="#FFC107"
+        android:fillColor="#00000000"
+        android:strokeLineCap="round"
+        android:pathData="M 174 407 L 174 423" />
+    <!-- Letter N -->
+    <path
+        android:strokeWidth="4"
+        android:strokeColor="#FFC107"
+        android:fillColor="#00000000"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round"
+        android:pathData="M 198 423 L 198 407 L 214 423 L 214 407" />
+    <!-- Letter D -->
+    <path
+        android:strokeWidth="4"
+        android:strokeColor="#FFC107"
+        android:fillColor="#00000000"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round"
+        android:pathData="M 238 407 L 238 423 M 238 407 L 246 407 C 252 407, 254 411, 254 415 C 254 419, 252 423, 246 423 L 238 423" />
+    <!-- Letter I -->
+    <path
+        android:strokeWidth="4"
+        android:strokeColor="#FFC107"
+        android:fillColor="#00000000"
+        android:strokeLineCap="round"
+        android:pathData="M 286 407 L 286 423" />
+    <!-- Letter A -->
+    <path
+        android:strokeWidth="4"
+        android:strokeColor="#FFC107"
+        android:fillColor="#00000000"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round"
+        android:pathData="M 318 423 L 326 407 L 334 423 M 321 417 L 331 417" />
+    <!-- Right Dash -->
+    <path
+        android:strokeWidth="4"
+        android:strokeColor="#FFC107"
+        android:fillColor="#00000000"
+        android:strokeLineCap="round"
+        android:pathData="M 372 415 L 402 415" />
+</vector>

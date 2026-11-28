@@ -1,0 +1,55 @@
+rules_version = '2';
+service firebase.storage {
+  match /b/{bucket}/o {
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    // Public feed, reels, stories, avatars, thumbnails (uploaded only by signed-in users, validated content types & size <= 250MB)
+    match /media/{allPaths=**} {
+      allow read: if true;
+      allow write: if isSignedIn() &&
+        request.resource.size <= 250 * 1024 * 1024 &&
+        (
+          request.resource.contentType.matches('video/.*') ||
+          request.resource.contentType.matches('image/.*') ||
+          request.resource.contentType.matches('audio/.*')
+        );
+    }
+
+    match /stories/{allPaths=**} {
+      allow read: if true;
+      allow write: if isSignedIn() &&
+        request.resource.size <= 150 * 1024 * 1024 &&
+        (
+          request.resource.contentType.matches('video/.*') ||
+          request.resource.contentType.matches('image/.*') ||
+          request.resource.contentType.matches('audio/.*')
+        );
+    }
+
+    // Private Exclusive Media Vault Storage Path (strictly gated by entitlement status)
+    match /exclusive_vault/{contentId}/{fileName} {
+      allow read: if isSignedIn() && (
+        firestore.get(/databases/(default)/documents/exclusive_media_vault/$(contentId)).data.creatorId == request.auth.uid ||
+        (
+          firestore.exists(/databases/(default)/documents/content_entitlements/$(request.auth.uid + '_' + contentId)) &&
+          firestore.get(/databases/(default)/documents/content_entitlements/$(request.auth.uid + '_' + contentId)).data.active == true
+        )
+      );
+      allow write: if isSignedIn() &&
+        request.resource.size <= 250 * 1024 * 1024;
+    }
+
+    // User avatars, deposits, chat attachments
+    match /users/{userId}/{allPaths=**} {
+      allow read: if true;
+      allow write: if isSignedIn() && request.auth.uid == userId && request.resource.size <= 50 * 1024 * 1024;
+    }
+
+    match /{allPaths=**} {
+      allow read: if true;
+      allow write: if isSignedIn() && request.resource.size <= 250 * 1024 * 1024;
+    }
+  }
+}

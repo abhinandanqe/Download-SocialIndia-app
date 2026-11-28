@@ -1,0 +1,9 @@
+{
+  "name": "Social India",
+  "description": "Social India Beta - Instagram-like social media with stories and subscriptions.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ],
+  "developmentAppUrl": "http://localhost:3000"
+}
