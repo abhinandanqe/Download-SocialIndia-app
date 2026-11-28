@@ -1,4 +1,4 @@
-name: Build & Publish Social India APK
+name: Social India APK Release
 
 on:
   push:
@@ -22,31 +22,46 @@ on:
 permissions:
   contents: write
 
+concurrency:
+  group: social-india-apk
+  cancel-in-progress: false
+
 jobs:
-  build-apk:
+  build:
+    name: Build & Publish Social India Debug APK
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout Repository
+      - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Set up JDK 21
+      - name: Setup Java 21
         uses: actions/setup-java@v4
         with:
           distribution: temurin
           java-version: '21'
 
-      - name: Set up Android SDK
+      - name: Setup Android SDK
         uses: android-actions/setup-android@v3
+
+      - name: Setup Gradle 9.3.1
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '9.3.1'
 
       - name: Prepare Debug Keystore
         run: |
           if [ -f debug.keystore.base64 ]; then
             base64 -d debug.keystore.base64 > debug.keystore
           elif [ ! -f debug.keystore ]; then
-            keytool -genkey -v -keystore debug.keystore \
-              -storepass android -alias androiddebugkey \
-              -keypass android -keyalg RSA -keysize 2048 -validity 10000 \
+            keytool -genkeypair -v \
+              -keystore debug.keystore \
+              -storepass android \
+              -alias androiddebugkey \
+              -keypass android \
+              -keyalg RSA \
+              -keysize 2048 \
+              -validity 10000 \
               -dname "CN=Android Debug,O=Android,C=US"
           fi
 
@@ -71,15 +86,10 @@ jobs:
           echo "apk_name=$APK_NAME" >> "$GITHUB_OUTPUT"
           echo "Resolved v${VNAME} (versionCode=${VCODE})"
 
-      - name: Set up Gradle 9.3.1
-        uses: gradle/actions/setup-gradle@v4
-        with:
-          gradle-version: '9.3.1'
-
       - name: Build Debug APK
         run: gradle :app:assembleDebug --stacktrace
 
-      - name: Prepare APK & Auto-Update Manifest
+      - name: Verify APK & Build Auto-Update Manifest
         env:
           VERSION_CODE: ${{ steps.app_meta.outputs.version_code }}
           VERSION_NAME: ${{ steps.app_meta.outputs.version_name }}
@@ -89,8 +99,19 @@ jobs:
           CUSTOM_NOTES: ${{ inputs.release_notes || '' }}
           REPO_SLUG: ${{ github.repository }}
         run: |
+          APK=$(find app/build/outputs/apk \
+            -type f -name '*.apk' \
+            ! -path '*/androidTest/*' | head -n 1)
+
+          if [ -z "$APK" ]; then
+            echo "ERROR: APK not generated"
+            find app/build/outputs -type f || true
+            exit 1
+          fi
+
           mkdir -p release-output
-          cp app/build/outputs/apk/debug/app-debug.apk "release-output/${APK_NAME}"
+          cp "$APK" "release-output/${APK_NAME}"
+
           python3 - <<'PY'
           import json, os
 
@@ -120,6 +141,8 @@ jobs:
           with open("release-output/update-manifest.json", "w", encoding="utf-8") as f:
               json.dump(manifest, f, indent=2)
           PY
+
+          file "release-output/${APK_NAME}"
           ls -lh release-output/
 
       - name: Upload Downloadable APK Artifact
@@ -131,17 +154,22 @@ jobs:
             release-output/update-manifest.json
           retention-days: 30
 
-      - name: Publish Public APK & Auto-Update Manifest to GitHub Releases
+      - name: Publish APK Directly to GitHub Release
         uses: softprops/action-gh-release@v2
         with:
           tag_name: v${{ steps.app_meta.outputs.version_name }}-c${{ steps.app_meta.outputs.version_code }}-b${{ github.run_number }}
           name: Social India v${{ steps.app_meta.outputs.version_name }} (Build ${{ steps.app_meta.outputs.version_code }})
+          fail_on_unmatched_files: true
           make_latest: true
           body: |
-            Automated signed debug APK build for **Social India** (`v${{ steps.app_meta.outputs.version_name }}`, Build `${{ steps.app_meta.outputs.version_code }}`).
+            Social India Android App
 
-            - Tap **${{ steps.app_meta.outputs.apk_name }}** below to download and install directly on Android.
-            - Existing Social India users with GitHub Auto-Sync enabled will automatically see the in-app Update Popup on launch.
+            - Version: ${{ steps.app_meta.outputs.version_name }}
+            - Version Code: ${{ steps.app_meta.outputs.version_code }}
+            - Package: com.socialindia
+            - Build Type: Debug APK
+
+            Download **${{ steps.app_meta.outputs.apk_name }}** below. Existing users with GitHub Auto-Sync enabled will get the automatic update popup on launch.
           files: |
             release-output/${{ steps.app_meta.outputs.apk_name }}
             release-output/update-manifest.json
